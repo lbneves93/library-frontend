@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-import { isAuthenticated, getStoredToken } from '../../utils/auth';
+import { isAuthenticated, getStoredToken, getUserRole } from '../../utils/auth';
 import MemberDashboard from '../../components/MemberDashboard';
 import LibrarianDashboard from '../../components/LibrarianDashboard';
+import BooksList from '../../components/BooksList';
 import './styles.css';
 
 function Home() {
@@ -68,14 +69,16 @@ function Home() {
     );
   }
 
-  // Determine which dashboard to show based on response
-  const isMember = dashboardData && dashboardData.borrowed_books !== undefined;
-  const isLibrarian = dashboardData && dashboardData.total_books !== undefined;
+  // Determine which dashboard to show based on user role
+  const userRole = getUserRole();
+  const isMember = userRole === 'member';
+  const isLibrarian = userRole === 'librarian';
 
   return (
     <div className="home-container">
+      {/* Dashboard Section */}
       {isMember && (
-        <MemberDashboard borrowedBooks={dashboardData.borrowed_books} />
+        <MemberDashboard borrowedBooks={dashboardData?.borrowed_books || []} />
       )}
       {isLibrarian && (
         <LibrarianDashboard dashboardData={dashboardData} />
@@ -83,9 +86,12 @@ function Home() {
       {!isMember && !isLibrarian && (
         <div className="unknown-dashboard">
           <h2>Dashboard</h2>
-          <p>Unable to determine dashboard type.</p>
+          <p>Unable to determine dashboard type. User role: {userRole || 'undefined'}</p>
         </div>
       )}
+      
+      {/* Books List Section */}
+      <BooksList />
     </div>
   );
 }

@@ -65,12 +65,19 @@ const Signin = () => {
         setStoredToken(cleanToken);
         
         // Store user name if available in response or form data
-        const userName = response.data?.user?.name || response.data?.name || (isSignup ? formData.name : '');
+        const userName = response.data?.user?.name || (isSignup ? formData.name : '');
         if (userName) {
           localStorage.setItem('user_name', userName);
         }
         
+        // Store role from response or set default for signup
+        const userRole = response.data?.user?.role || (isSignup ? 'member' : '');
+        if (userRole) {
+          localStorage.setItem('user_role', userRole);
+        }
+        
         console.log('JWT token stored successfully');
+        console.log('User role:', userRole);
         
         // Redirect to home page after successful signin/signup
         navigate('/');

@@ -37,6 +37,8 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401) {
       // Token expired or invalid, remove it from storage
       localStorage.removeItem('jwt_token');
+      localStorage.removeItem('user_role');
+      localStorage.removeItem('user_name');
       // Optionally redirect to signin page
       window.location.href = '/signin';
     }
@@ -57,8 +59,24 @@ export const removeStoredToken = () => {
   localStorage.removeItem('jwt_token');
 };
 
+export const getStoredRole = () => {
+  return localStorage.getItem('user_role');
+};
+
+export const setStoredRole = (role) => {
+  localStorage.setItem('user_role', role);
+};
+
+export const removeStoredRole = () => {
+  localStorage.removeItem('user_role');
+};
+
 export const isAuthenticated = () => {
   return !!getStoredToken();
+};
+
+export const getUserRole = () => {
+  return getStoredRole();
 };
 
 export default apiClient;

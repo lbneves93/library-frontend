@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-import { getStoredToken, removeStoredToken, isAuthenticated } from '../../utils/auth';
+import { getStoredToken, removeStoredToken, removeStoredRole, isAuthenticated } from '../../utils/auth';
 import './styles.css';
 
 const UserMenu = () => {
@@ -33,6 +33,7 @@ const UserMenu = () => {
     } finally {
       // Always clear local storage and redirect, even if API call fails
       removeStoredToken();
+      removeStoredRole();
       localStorage.removeItem('user_name');
       navigate('/signin');
     }
