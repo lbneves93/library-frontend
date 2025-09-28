@@ -1,0 +1,45 @@
+.App {
+  text-align: center;
+  /* background: linear-gradient(to right, #99b3e6, #66ffcc); */
+  background-color: whitesmoke;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.App-book {
+  height: 5vmin;
+  pointer-events: none;
+  margin-right: 1vw;
+}
+
+
+.App-header {
+  min-height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.header-right {
+  position: absolute;
+  right: 20px;
+  display: flex;
+  align-items: center;
+}
