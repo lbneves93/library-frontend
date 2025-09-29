@@ -36,13 +36,39 @@ const BooksList = () => {
         ? `http://localhost:3000/books?search=${encodeURIComponent(searchQuery)}`
         : 'http://localhost:3000/books';
       
+      console.log('Fetching books with URL:', url);
+      
       const response = await axios.get(url, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
 
-      setBooks(response.data);
+      console.log('Books response:', response.data);
+
+      // Handle new API response structure with data array and attributes
+      const booksData = response.data.data || response.data;
+      console.log('Books data array:', booksData);
+      
+      const processedBooks = booksData.map(item => {
+        // If the item has attributes, use them; otherwise use the item directly
+        const bookData = item.attributes || item;
+        return {
+          id: bookData.id,
+          title: bookData.title,
+          author: bookData.author,
+          genre: bookData.genre,
+          isbn: bookData.isbn,
+          total_copies: bookData.total_copies,
+          available: bookData.available,
+          created_at: bookData.created_at,
+          updated_at: bookData.updated_at,
+          borrows: bookData.borrows || [] // Include borrows for librarians
+        };
+      });
+
+      console.log('Processed books:', processedBooks);
+      setBooks(processedBooks);
     } catch (err) {
       console.error('Books fetch error:', err);
       setError('Failed to load books');
@@ -62,6 +88,7 @@ const BooksList = () => {
 
   const handleClearSearch = () => {
     setSearchTerm('');
+    setIsSearching(false);
     fetchBooks();
   };
 
@@ -219,10 +246,25 @@ const BooksList = () => {
           }
         });
 
+        // Handle new API response structure for single book
+        const bookData = response.data.data?.attributes || response.data.attributes || response.data;
+        const processedBook = {
+          id: bookData.id,
+          title: bookData.title,
+          author: bookData.author,
+          genre: bookData.genre,
+          isbn: bookData.isbn,
+          total_copies: bookData.total_copies,
+          available: bookData.available,
+          created_at: bookData.created_at,
+          updated_at: bookData.updated_at,
+          borrows: bookData.borrows || []
+        };
+
         // Update the specific book in the books array
         setBooks(prevBooks => 
           prevBooks.map(book => 
-            book.id === borrowsModal.bookId ? response.data : book
+            book.id === borrowsModal.bookId ? processedBook : book
           )
         );
       } catch (err) {
