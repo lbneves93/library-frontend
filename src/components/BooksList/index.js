@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import { getStoredToken, getUserRole } from '../../utils/auth';
@@ -15,6 +15,7 @@ const BooksList = () => {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [orderBy, setOrderBy] = useState('ASC');
   const [toast, setToast] = useState({ isVisible: false, message: '', type: '' });
   const [borrowingBookId, setBorrowingBookId] = useState(null);
   const [modal, setModal] = useState({ isVisible: false, bookId: null, bookTitle: '' });
@@ -22,19 +23,25 @@ const BooksList = () => {
   const [deleteModal, setDeleteModal] = useState({ isVisible: false, bookId: null, bookTitle: '' });
   const [deletingBookId, setDeletingBookId] = useState(null);
 
-  useEffect(() => {
-    fetchBooks();
-  }, []);
-
-  const fetchBooks = async (searchQuery = '') => {
+  const fetchBooks = useCallback(async (searchQuery = '', order = orderBy) => {
     try {
       setLoading(true);
       setError('');
       const token = getStoredToken();
       
-      const url = searchQuery 
-        ? `http://localhost:3000/books?search=${encodeURIComponent(searchQuery)}`
-        : 'http://localhost:3000/books';
+      let url = 'http://localhost:3000/books';
+      const params = new URLSearchParams();
+      
+      if (searchQuery) {
+        params.append('search', searchQuery);
+      }
+      if (order) {
+        params.append('order', order);
+      }
+      
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
       
       console.log('Fetching books with URL:', url);
       
@@ -76,20 +83,30 @@ const BooksList = () => {
       setLoading(false);
       setIsSearching(false);
     }
-  };
+  }, [orderBy]);
+
+  useEffect(() => {
+    fetchBooks();
+  }, [fetchBooks]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
       setIsSearching(true);
-      fetchBooks(searchTerm.trim());
+      fetchBooks(searchTerm.trim(), orderBy);
     }
   };
 
   const handleClearSearch = () => {
     setSearchTerm('');
     setIsSearching(false);
-    fetchBooks();
+    fetchBooks('', orderBy);
+  };
+
+  const handleOrderChange = (e) => {
+    const newOrder = e.target.value;
+    setOrderBy(newOrder);
+    fetchBooks(searchTerm, newOrder);
   };
 
   const handleBorrowClick = (bookId, bookTitle) => {
@@ -270,11 +287,11 @@ const BooksList = () => {
       } catch (err) {
         console.error('Error updating book:', err);
         // Fallback to full reload if specific book update fails
-        fetchBooks();
+        fetchBooks('', orderBy);
       }
     } else {
       // Fallback to full reload if no book ID
-      fetchBooks();
+      fetchBooks('', orderBy);
     }
   };
 
@@ -346,6 +363,18 @@ const BooksList = () => {
             )}
           </div>
         </form>
+        <div className="order-section">
+          <label htmlFor="order-select" className="order-label">Order by title:</label>
+          <select
+            id="order-select"
+            value={orderBy}
+            onChange={handleOrderChange}
+            className="order-select"
+          >
+            <option value="ASC">A-Z (Ascending)</option>
+            <option value="DESC">Z-A (Descending)</option>
+          </select>
+        </div>
       </div>
 
       {/* Books Grid */}

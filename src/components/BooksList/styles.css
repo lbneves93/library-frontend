@@ -15,6 +15,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .new-book-button {
@@ -95,6 +96,40 @@
 
 .clear-button:hover {
   background-color: #545b62;
+}
+
+.order-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.order-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+}
+
+.order-select {
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  min-width: 150px;
+}
+
+.order-select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.order-select:hover {
+  border-color: #007bff;
 }
 
 .books-grid {
@@ -389,6 +424,12 @@
     margin: 0 10px;
   }
   
+  .search-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  
   .search-input-group {
     flex-direction: column;
     gap: 10px;
@@ -396,5 +437,14 @@
   
   .search-input {
     width: 100%;
+  }
+  
+  .order-section {
+    margin-left: 0;
+    justify-content: center;
+  }
+  
+  .order-select {
+    min-width: 120px;
   }
 }
