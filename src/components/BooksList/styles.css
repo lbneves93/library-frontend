@@ -1,5 +1,5 @@
 .books-list-container {
-  padding: 20px;
+  padding: 10px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -14,6 +14,7 @@
   margin-bottom: 30px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 15px;
   flex-wrap: wrap;
 }
@@ -102,7 +103,6 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-left: auto;
 }
 
 .order-label {
@@ -137,7 +137,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .book-card {
@@ -148,8 +148,9 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
-  flex: 0 0 300px;
-  min-width: 300px;
+  flex: 0 0 calc(25% - 15px);
+  min-width: 100px;
+  max-width: 200px;
 }
 
 .book-card:hover {
@@ -188,15 +189,12 @@
   color: white;
 }
 
-.book-info {
-  margin-top: 10px;
-}
-
 .book-title {
   color: #333;
   margin: 0 0 8px 0;
   font-size: 18px;
   font-weight: 600;
+  margin-top: 20px;
 }
 
 .book-author {
@@ -286,16 +284,16 @@
 
 .edit-icon-button {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  background: rgba(0, 123, 255, 0.9);
-  color: white;
+  top: 5px;
+  left: 5px;
+  background: transparent;
+  color: #007bff;
   border: none;
   border-radius: 50%;
   width: 32px;
   height: 32px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -304,22 +302,22 @@
 }
 
 .edit-icon-button:hover {
-  background: rgba(0, 123, 255, 1);
+  background: rgba(0, 123, 255, 0.1);
   transform: scale(1.1);
 }
 
 .delete-icon-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(220, 53, 69, 0.9);
-  color: white;
+  top: 5px;
+  left: 35px;
+  background: transparent;
+  color: #dc3545;
   border: none;
   border-radius: 50%;
   width: 32px;
   height: 32px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -328,7 +326,7 @@
 }
 
 .delete-icon-button:hover {
-  background: rgba(220, 53, 69, 1);
+  background: rgba(220, 53, 69, 0.1);
   transform: scale(1.1);
 }
 
@@ -412,6 +410,22 @@
   background-color: #0056b3;
 }
 
+@media (max-width: 1200px) {
+  .book-card {
+    flex: 0 0 calc(25% - 15px);
+    min-width: 200px;
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 900px) {
+  .book-card {
+    flex: 0 0 calc(25% - 10px);
+    min-width: 180px;
+    max-width: 250px;
+  }
+}
+
 @media (max-width: 768px) {
   .books-grid {
     flex-direction: column;
@@ -426,7 +440,7 @@
   
   .search-section {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: 15px;
   }
   

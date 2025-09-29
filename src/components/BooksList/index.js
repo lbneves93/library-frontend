@@ -411,7 +411,7 @@ const BooksList = () => {
                 </button>
               )}
               
-              <div className="book-info">
+              <div>
                 <h3 className="book-title">{book.title}</h3>
                 <p className="book-author">by {book.author}</p>
                 <p className="book-genre">{book.genre}</p>
